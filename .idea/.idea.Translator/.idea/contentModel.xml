@@ -32,8 +32,10 @@
         <e p="MainWindow.resx" t="Include" />
         <e p="NewNounWindow.cs" t="Include" />
         <e p="NewNounWindow.Designer.cs" t="Include" />
+        <e p="NewNounWindow.resx" t="Include" />
         <e p="NewVerbWindow.cs" t="Include" />
         <e p="NewVerbWindow.Designer.cs" t="Include" />
+        <e p="NewVerbWindow.resx" t="Include" />
         <e p="obj" t="ExcludeRecursive">
           <e p="Debug" t="Include">
             <e p="netcoreapp3.0" t="Include">

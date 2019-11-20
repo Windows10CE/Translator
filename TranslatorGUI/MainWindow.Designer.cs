@@ -29,30 +29,30 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.EnglishBox = new System.Windows.Forms.TextBox();
+            this.SpanishBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.EnglishToSpanish = new System.Windows.Forms.Button();
+            this.SpanishToEnglish = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // textBox1
+            // EnglishBox
             // 
-            this.textBox1.Location = new System.Drawing.Point(41, 29);
-            this.textBox1.Multiline = true;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(406, 130);
-            this.textBox1.TabIndex = 0;
+            this.EnglishBox.Location = new System.Drawing.Point(41, 29);
+            this.EnglishBox.Multiline = true;
+            this.EnglishBox.Name = "EnglishBox";
+            this.EnglishBox.Size = new System.Drawing.Size(406, 130);
+            this.EnglishBox.TabIndex = 0;
             // 
-            // textBox2
+            // SpanishBox
             // 
-            this.textBox2.Location = new System.Drawing.Point(41, 197);
-            this.textBox2.Multiline = true;
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(405, 136);
-            this.textBox2.TabIndex = 1;
+            this.SpanishBox.Location = new System.Drawing.Point(41, 197);
+            this.SpanishBox.Multiline = true;
+            this.SpanishBox.Name = "SpanishBox";
+            this.SpanishBox.Size = new System.Drawing.Size(405, 136);
+            this.SpanishBox.TabIndex = 1;
             // 
             // label1
             // 
@@ -70,34 +70,35 @@
             this.label2.TabIndex = 3;
             this.label2.Text = "Spanish";
             // 
-            // button1
+            // EnglishToSpanish
             // 
-            this.button1.Location = new System.Drawing.Point(513, 44);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(209, 85);
-            this.button1.TabIndex = 4;
-            this.button1.Text = "English to Spanish";
-            this.button1.UseVisualStyleBackColor = true;
+            this.EnglishToSpanish.Location = new System.Drawing.Point(513, 44);
+            this.EnglishToSpanish.Name = "EnglishToSpanish";
+            this.EnglishToSpanish.Size = new System.Drawing.Size(209, 85);
+            this.EnglishToSpanish.TabIndex = 4;
+            this.EnglishToSpanish.Text = "English to Spanish";
+            this.EnglishToSpanish.UseVisualStyleBackColor = true;
+            this.EnglishToSpanish.Click += new System.EventHandler(this.EnglishToSpanish_Click);
             // 
-            // button2
+            // SpanishToEnglish
             // 
-            this.button2.Location = new System.Drawing.Point(513, 224);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(208, 85);
-            this.button2.TabIndex = 5;
-            this.button2.Text = "Spanish to English";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.SpanishToEnglish.Location = new System.Drawing.Point(513, 224);
+            this.SpanishToEnglish.Name = "SpanishToEnglish";
+            this.SpanishToEnglish.Size = new System.Drawing.Size(208, 85);
+            this.SpanishToEnglish.TabIndex = 5;
+            this.SpanishToEnglish.Text = "Spanish to English";
+            this.SpanishToEnglish.UseVisualStyleBackColor = true;
+            this.SpanishToEnglish.Click += new System.EventHandler(this.SpanishToEnglish_Click);
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(738, 146);
+            this.button3.Location = new System.Drawing.Point(738, 147);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(172, 57);
+            this.button3.Size = new System.Drawing.Size(171, 57);
             this.button3.TabIndex = 6;
             this.button3.Text = "New Word";
             this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            this.button3.Click += new System.EventHandler(this.NewWord_Click);
             // 
             // Form1
             // 
@@ -105,12 +106,12 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(933, 378);
             this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.SpanishToEnglish);
+            this.Controls.Add(this.EnglishToSpanish);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.textBox2);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.SpanishBox);
+            this.Controls.Add(this.EnglishBox);
             this.Name = "Form1";
             this.Text = "Translator";
             this.ResumeLayout(false);
@@ -119,12 +120,12 @@
 
         #endregion
 
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.TextBox SpanishBox;
+        private System.Windows.Forms.TextBox EnglishBox;
+        private System.Windows.Forms.Button EnglishToSpanish;
+        private System.Windows.Forms.Button SpanishToEnglish;
     }
 }

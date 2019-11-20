@@ -15,12 +15,10 @@ namespace TranslatorGUI
             switch (this.comboBox1.Text)
             {
                 case "Noun":
-                    Hide();
                     new NewNounWindow().ShowDialog();
                     Close();
                     break;
                 case "Verb":
-                    Hide();
                     new NewVerbWindow().ShowDialog();
                     Close();
                     break;
