@@ -1,5 +1,6 @@
 using System;
 using System.Windows.Forms;
+using Translator.Words;
 
 namespace TranslatorGUI
 {
@@ -20,7 +21,14 @@ namespace TranslatorGUI
             bruh[1, 0] = SpanInfinBox.Text;
             bruh[1, 1] = $"{SpanIBox.Text}|{SpanIEndBox.Text}";
             bruh[1, 2] = $"{SpanYouBox.Text}|{SpanYouEndBox.Text}";
-            bruh[1, 3] = $"";
+            bruh[1, 3] = $"{SpanHeBox.Text}|{SpanHeEndBox.Text}";
+            bruh[1, 4] = $"{SpanWeBox.Text}|{SpanWeEndBox.Text}";
+            bruh[1, 5] = $"{SpanTheyBox.Text}|{SpanTheyEndBox.Text}";
+            bruh[1, 6] = $"{SpanYouComBox.Text}|{SpanYouComEndBox.Text}";
+            bruh[1, 7] = $"{SpanHeComBox.Text}|{SpanHeComEndBox.Text}";
+            bruh[1, 8] = $"{SpanWeComBox.Text}|{SpanWeComEndBox}";
+            bruh[1, 9] = $"{SpanTheyComBox.Text}|{SpanTheyComEndBox.Text}";
+            Translator.Translator.AddWord(new Verb(bruh));
         }
     }
 }
