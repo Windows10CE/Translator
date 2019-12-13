@@ -5,10 +5,10 @@ namespace Translator.Words
     [Serializable]
     public class Verb
     {
-        public string[,] Trans;
-        public Verb(string[,] trans)
+        public string[][] Trans { get; set; }
+
+        public Verb()
         {
-            Trans = trans;
         }
     }
 }

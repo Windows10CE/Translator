@@ -41,6 +41,7 @@
             // EnglishBox
             // 
             this.EnglishBox.Location = new System.Drawing.Point(41, 29);
+            this.EnglishBox.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.EnglishBox.Multiline = true;
             this.EnglishBox.Name = "EnglishBox";
             this.EnglishBox.Size = new System.Drawing.Size(406, 130);
@@ -49,6 +50,7 @@
             // SpanishBox
             // 
             this.SpanishBox.Location = new System.Drawing.Point(41, 197);
+            this.SpanishBox.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.SpanishBox.Multiline = true;
             this.SpanishBox.Name = "SpanishBox";
             this.SpanishBox.Size = new System.Drawing.Size(405, 136);
@@ -57,6 +59,7 @@
             // label1
             // 
             this.label1.Location = new System.Drawing.Point(43, 5);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(111, 24);
             this.label1.TabIndex = 2;
@@ -65,6 +68,7 @@
             // label2
             // 
             this.label2.Location = new System.Drawing.Point(41, 167);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(106, 27);
             this.label2.TabIndex = 3;
@@ -72,7 +76,9 @@
             // 
             // EnglishToSpanish
             // 
+            this.EnglishToSpanish.Enabled = false;
             this.EnglishToSpanish.Location = new System.Drawing.Point(513, 44);
+            this.EnglishToSpanish.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.EnglishToSpanish.Name = "EnglishToSpanish";
             this.EnglishToSpanish.Size = new System.Drawing.Size(209, 85);
             this.EnglishToSpanish.TabIndex = 4;
@@ -83,6 +89,7 @@
             // SpanishToEnglish
             // 
             this.SpanishToEnglish.Location = new System.Drawing.Point(513, 224);
+            this.SpanishToEnglish.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.SpanishToEnglish.Name = "SpanishToEnglish";
             this.SpanishToEnglish.Size = new System.Drawing.Size(208, 85);
             this.SpanishToEnglish.TabIndex = 5;
@@ -93,8 +100,9 @@
             // button3
             // 
             this.button3.Location = new System.Drawing.Point(738, 147);
+            this.button3.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(171, 57);
+            this.button3.Size = new System.Drawing.Size(172, 57);
             this.button3.TabIndex = 6;
             this.button3.Text = "New Word";
             this.button3.UseVisualStyleBackColor = true;
@@ -112,6 +120,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.SpanishBox);
             this.Controls.Add(this.EnglishBox);
+            this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.Name = "Form1";
             this.Text = "Translator";
             this.ResumeLayout(false);

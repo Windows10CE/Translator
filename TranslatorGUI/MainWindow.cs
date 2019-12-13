@@ -18,6 +18,7 @@ namespace TranslatorGUI
         private void EnglishToSpanish_Click(object sender, EventArgs e)
         {
             SpanishBox.Text = new Translator.Translator().EnglishToSpanish(EnglishBox.Text);
+            Application.Exit();
         }
 
         private void NewWord_Click(object sender, EventArgs e)
