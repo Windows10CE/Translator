@@ -17,47 +17,80 @@ namespace Translator
             nounsdb.Delete(x => x.Trans[0, 0] == noun.Trans[0, 0]);
             nounsdb.Insert(noun);
         }
+
         public static void AddWord(Verb verb)
         {
             var nounsdb = Database.GetCollection<Verb>("Verbs");
             nounsdb.Delete(x => x.Trans[0, 0] == verb.Trans[0, 0]);
             nounsdb.Insert(verb);
         }
-        
+
         public string EnglishToSpanish(string english)
         {
-            return "";
+            var nounsdb = Database.GetCollection<Noun>("Nouns").FindAll().ToList();
+            var verbsdb = Database.GetCollection<Verb>("Verbs").FindAll().ToList();
+
+
+
+            throw new OverflowException("Out of Memory");
         }
 
         public string SpanishToEnglish(string spanish)
         {
-            var builder = new StringBuilder();
-            var original = new List<string>();
-            original.AddRange(spanish.Split(' '));
-            for (int x = 0; x <= original.Count; x++) original[x] = original[x].ToLower();
-            if (original[0] == "El" || original[0] == "La" || original[0] == "Los" || original[0] == "Las")
-                builder.Append("The ");
-            if (original[0] == "Un" || original[0] == "Una")
-                builder.Append("A ");
-            if (original[0] == "Unos" || original[0] == "Unas")
-                builder.Append("Some ");
-            bool pronoun = !Database.GetCollection<Noun>("Nouns").Exists(x =>
-                x.Trans[1, 0] == original[0] || x.Trans[1, 0] == original[1] || x.Trans[1, 1] == original[0] ||
-                x.Trans[1, 1] == original[1]);
-            if (!pronoun)
+            var nounsdb = Database.GetCollection<Noun>("Nouns").FindAll().ToList();
+            var verbsdb = Database.GetCollection<Verb>("Verbs").FindAll().ToList();
+
+            var words = spanish.Split(' ');
+            var nouns = new List<string>();
+            var verbs = new List<string>();
+            var things = new List<string>();
+            foreach (var word in words)
             {
-                string[,] noun =
-                    Database.GetCollection<Noun>("Nouns")
-                        .Exists(x => x.Trans[1, 0] == original[0] || x.Trans[0, 1] == original[0])
-                        ? Database.GetCollection<Noun>("Nouns")
-                            .FindOne(x => x.Trans[1, 0] == original[0] || x.Trans[0, 1] == original[0]).Trans
-                        : Database.GetCollection<Noun>("Nouns")
-                            .FindOne(x => x.Trans[1, 0] == original[1] || x.Trans[0, 1] == original[1]).Trans;
-                if (original.Contains(noun[1, 0])) builder.Append(noun[0, 0]);
-                else builder.Append(noun[0, 1]);
+                var noun = nounsdb.First(x => x.Trans.OfType<string>().Any(y => y.ToLower() == word.ToLower())).Trans;
+                if (nounsdb.Any(x => x.Trans.OfType<string>().Any(y => y.ToLower() == word.ToLower())))
+                {
+                    if (noun[1, 0].Replace("|", "").ToLower() == word.ToLower())
+                        nouns.Add(noun[0, 0]);
+                    if (noun[1, 1].Replace("|", "").ToLower() == word.ToLower())
+                        nouns.Add(noun[0, 1]);
+                }
+
+                var verb = verbsdb.First(x => x.Trans.OfType<string>().Any(y => y.ToLower() == word.ToLower())).Trans;
+                if (verbsdb.Any(x => x.Trans.OfType<string>().Any(y => y.ToLower() == word.ToLower())))
+                {
+                    if (verb[1, 1].Replace("|", "").ToLower() == word.ToLower())
+                        if (nouns.Count > 0)
+                            verbs.Add(verb[0, 0]);
+                        else
+                            verbs.Add("I'm " + verb[0, 2]);
+                    if (verb[1, 2].Replace("|", "").ToLower() == word.ToLower())
+                        if (nouns.Count > 0)
+                            verbs.Add(verb[0, 1]);
+                        else
+                            verbs.Add("You're " + verb[0, 2]);
+                    if (verb[1, 3].Replace("|", "").ToLower() == word.ToLower())
+                        if (nouns.Count > 0)
+                            verbs.Add(verb[0, 0]);
+                        else
+                            verbs.Add("He's " + verb[0, 2]);
+                    if (verb[1, 4].Replace("|", "").ToLower() == word.ToLower())
+                        if (nouns.Count > 0)
+                            verbs.Add(verb[0, 2]);
+                        else
+                            verbs.Add("We're " + verb[0, 2]);
+                    if (verb[1, 5].Replace("|", "").ToLower() == word.ToLower())
+                        if (nouns.Count > 0)
+                            verbs.Add(verb[0, 0]);
+                        else
+                            verbs.Add("They're " + verb[0, 2]);
+                    else
+                        verbs.Add(verb[0, 1]);
+                }
+                
+                
             }
-            
-            return builder.ToString();
+
+            return "";
         }
     }
 }
