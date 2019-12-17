@@ -45,6 +45,8 @@ namespace Translator
             var verbs = new List<string>();
             var things = new List<string>();
             var articles = new List<string>();
+            var negative = false;
+            var command = false;
             foreach (var word in words)
             {
                 var noun = nounsdb.FirstOrDefault(x => x.Trans.Any(y => y.Any(z => z == word.ToLower())))?.Trans;
@@ -56,38 +58,86 @@ namespace Translator
                         nouns.Add(noun[0][1]);
                 }
 
-                var verb = verbsdb.FirstOrDefault(x => x.Trans.Any(y => y.Any(z => z == word.ToLower())))?.Trans;
-                if (verbsdb.Any(x => x.Trans.Any(y => y.Any(z => z == word.ToLower()))))
+                var verb = verbsdb.FirstOrDefault(x => x.Trans.Any(y => y.Any(z => word.ToLower().Contains(z))))?.Trans;
+                if (verbsdb.Any(x => x.Trans.Any(y => y.Any(z => word.ToLower().Contains(z)))))
                 {
-                    if (verb[1][1].Replace("|", "").ToLower() == word.ToLower())
+                    if (word.ToLower().Contains(verb[1][0].Replace("|", "").ToLower()))
+                        verbs.Add("to " + verb[0][1]);
+                    else if (word.ToLower().Contains(verb[1][1].Replace("|", "").ToLower()))
+                    {
                         if (nouns.Count > 0)
                             verbs.Add(verb[0][0]);
-                        else
+                        else if (!negative)
                             verbs.Add("I'm " + verb[0][2]);
-                    else if (verb[1][0].Replace("|", "").ToLower() == word.ToLower())
-                        verbs.Add("to " + verb[0][1]);
-                    else if (verb[1][2].Replace("|", "").ToLower() == word.ToLower())
+                        else if (negative)
+                            verbs.Add("I'm not " + verb[0][2]);
+                    }
+                    else if (word.ToLower().Contains(verb[1][2].Replace("|", "").ToLower()))
+                    {
                         if (nouns.Count > 0)
                             verbs.Add(verb[0][1]);
-                        else
+                        else if (!negative)
                             verbs.Add("You're " + verb[0][2]);
-                    else if (verb[1][3].Replace("|", "").ToLower() == word.ToLower())
+                        else if (negative)
+                            verbs.Add("You're not " + verb[0][2]);
+                    }
+                    else if (word.ToLower().Contains(verb[1][3].Replace("|", "").ToLower()))
+                    {
                         if (nouns.Count > 0)
                             verbs.Add(verb[0][0]);
-                        else
+                        else if (!negative)
                             verbs.Add("He's " + verb[0][2]);
-                    else if (verb[1][4].Replace("|", "").ToLower() == word.ToLower())
+                        else if (negative)
+                            verbs.Add("He's not " + verb[0][2]);
+                    }
+                    else if (word.ToLower().Contains(verb[1][4].Replace("|", "").ToLower()))
+                    {
                         if (nouns.Count > 0)
                             verbs.Add(verb[0][2]);
-                        else
+                        else if (!negative)
                             verbs.Add("We're " + verb[0][2]);
-                    else if (verb[1][5].Replace("|", "").ToLower() == word.ToLower())
+                        else if (negative)
+                            verbs.Add("We're not " + verb[0][2]);
+                    }
+                    else if (word.ToLower().Contains(verb[1][5].Replace("|", "").ToLower()))
+                    {
                         if (nouns.Count > 0)
                             verbs.Add(verb[0][0]);
-                        else
+                        else if (!negative)
                             verbs.Add("They're " + verb[0][2]);
+                        else if (negative)
+                            verbs.Add("They're not " + verb[0][2]);
+                    }
                     else
+                    {
                         verbs.Add(verb[0][1]);
+                        command = true;
+                    }
+
+                    string ending = "";
+                    if (!verbsdb.Any(x => x.Trans.Any(y => y.Any(z => z == word.ToLower()))))
+                    {
+                        if (word.Length >= 6)
+                            ending = word.ToLower().Substring(word.Length - 6);
+                        else if (word.Length >= 4)
+                            ending = word.ToLower().Substring(word.Length - 4);
+                        else
+                            ending = word.ToLower().Substring(word.Length - 2);
+                    }
+                    if (ending.Contains("me"))
+                        things.Add("to me");
+                    if (ending.Contains("te"))
+                        things.Add("to you");
+                    if (ending.Contains("les"))
+                        things.Add("to them");
+                    else if (ending.Contains("le"))
+                        things.Add("to him");
+                    if (ending.Contains("se"))
+                        things.Add("to him");
+                    if (ending.Contains("los") || ending.Contains("las"))
+                        things.Add("them");
+                    else if (ending.Contains("lo") || ending.Contains("la"))
+                        things.Add("it");
                 }
                 
                 if (word.ToLower() == "te")
@@ -110,6 +160,9 @@ namespace Translator
                     articles.Add("a(n)");
                 if (word.ToLower() == "unos" || word.ToLower() == "unas")
                     articles.Add("some");
+
+                if (word.ToLower() == "no")
+                    negative = true;
             }
             
             var builder = new StringBuilder();
@@ -120,11 +173,15 @@ namespace Translator
                 builder.Append(nouns[0] + " ");
             }
 
+            if (negative && command)
+                builder.Append("Don't ");
+
             foreach (var verb in verbs)
             {
                 builder.Append(verb + " ");
             }
 
+            things.Reverse();
             foreach (var thing in things)
             {
                 builder.Append(thing + " ");

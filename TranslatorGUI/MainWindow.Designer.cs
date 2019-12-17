@@ -76,7 +76,6 @@
             // 
             // EnglishToSpanish
             // 
-            this.EnglishToSpanish.Enabled = false;
             this.EnglishToSpanish.Location = new System.Drawing.Point(513, 44);
             this.EnglishToSpanish.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.EnglishToSpanish.Name = "EnglishToSpanish";
