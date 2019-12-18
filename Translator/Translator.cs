@@ -27,12 +27,212 @@ namespace Translator
 
         public string EnglishToSpanish(string english)
         {
-            var nounsdb = Database.GetCollection<Noun>("Nouns").FindAll().ToList();
-            var verbsdb = Database.GetCollection<Verb>("Verbs").FindAll().ToList();
+            try
+            {
+                var nounsdb = Database.GetCollection<Noun>("Nouns").FindAll().ToList();
+                var verbsdb = Database.GetCollection<Verb>("Verbs").FindAll().ToList();
 
+                var pronouns = new List<string>();
+                var verbs = new List<Verb>();
+                var things = new List<string>();
+                bool negative = false;
+                bool command = false;
+                var words = english.Split(' ').Select(x => x.ToLower()).ToList();
+                for (int index = 0; index < words.Count; index++)
+                {
+                    var word = words[index];
+                    var verb = verbsdb.DefaultIfEmpty(null)
+                        .FirstOrDefault(x => x.Trans.Any(y => y.Any(z => z.ToLower() == word)));
+                    if (verb != null)
+                        verbs.Add(verb);
+                    if (word.Contains('\''))
+                    {
+                        word = word.Split('\'')[0];
+                    }
 
+                    bool leave = false;
+                    switch (word)
+                    {
+                        case "i":
+                            pronouns.Add("i");
+                            break;
+                        case "you":
+                            if (pronouns.Count > 0)
+                            {
+                                break;
+                            }
 
-            throw new OverflowException("Out of Memory");
+                            pronouns.Add("you");
+                            leave = true;
+                            break;
+                        case "she":
+                        case "he":
+                            pronouns.Add("he");
+                            break;
+                        case "they":
+                            pronouns.Add("they");
+                            break;
+                        case "we":
+                            pronouns.Add("we");
+                            break;
+                        case "let":
+                            pronouns.Add("let");
+                            command = true;
+                            break;
+                    }
+
+                    if (leave)
+                        continue;
+
+                    if (word == "me")
+                    {
+                        things.Add("to me");
+                    }
+
+                    if (word == "you")
+                    {
+                        things.Add("to you");
+                    }
+
+                    if (word == "him" || word == "her")
+                    {
+                        things.Add("to him");
+                    }
+
+                    if (word == "it")
+                    {
+                        if (words[index - 1] == "to")
+                            things.Add("to it");
+                        else things.Add("it");
+                    }
+
+                    if (word == "them")
+                    {
+                        if (words[index - 1] == "to")
+                            things.Add("to them");
+                        else things.Add("them");
+                    }
+
+                    if (word == "us")
+                    {
+                        things.Add("to us");
+                    }
+
+                    if (word == "don't" || word == "not")
+                        negative = true;
+                }
+
+                if (pronouns.Count < 0)
+                    command = true;
+
+                var builder = new StringBuilder();
+                var verbBuilder = new StringBuilder();
+                things.Reverse();
+
+                if (negative)
+                    builder.Append("no ");
+
+                if (!command)
+                {
+                    switch (pronouns[0])
+                    {
+                        case "i":
+                            verbBuilder.Append(verbs[0].Trans[1][1]);
+                            break;
+                        case "you":
+                            verbBuilder.Append(verbs[0].Trans[1][2]);
+                            break;
+                        case "he":
+                            verbBuilder.Append(verbs[0].Trans[1][3]);
+                            break;
+                        case "they":
+                            verbBuilder.Append(verbs[0].Trans[1][5]);
+                            break;
+                        case "we":
+                            verbBuilder.Append(verbs[0].Trans[1][4]);
+                            break;
+                    }
+
+                    foreach (var thing in things)
+                    {
+                        if (thing == "to him" || thing == "to her")
+                        {
+                            if (things.Any(x => x == "it" || x == "them"))
+                                builder.Append("se ");
+                            else
+                                builder.Append("le ");
+                        }
+
+                        if (thing == "to them")
+                        {
+                            if (things.Any(x => x == "it" || x == "them"))
+                                builder.Append("se ");
+                            else
+                                builder.Append("les ");
+                        }
+
+                        if (thing == "to me")
+                            builder.Append("me ");
+                        if (thing == "to you")
+                            builder.Append("te ");
+                        if (thing == "to us")
+                            builder.Append("nos ");
+                        if (thing == "it")
+                            builder.Append("lo ");
+                    }
+                }
+                else
+                {
+                    if (pronouns[0] == "let")
+                        verbBuilder.Append(verbs[0].Trans[1][8]);
+                    else
+                        verbBuilder.Append(verbs[0].Trans[1][3]);
+
+                    foreach (var thing in things)
+                    {
+                        if (thing == "to him" || thing == "to her")
+                        {
+                            if (things.Any(x => x == "it" || x == "them"))
+                                verbBuilder.Append("se");
+                            else
+                                verbBuilder.Append("le");
+                        }
+
+                        if (thing == "to them")
+                        {
+                            if (things.Any(x => x == "it" || x == "them"))
+                                verbBuilder.Append("se");
+                            else
+                                verbBuilder.Append("les");
+                        }
+
+                        if (thing == "to me")
+                            verbBuilder.Append("me");
+                        if (thing == "to you")
+                            verbBuilder.Append("te");
+                        if (thing == "to us")
+                            verbBuilder.Append("nos");
+                        if (thing == "it")
+                            verbBuilder.Append("lo");
+                    }
+                }
+
+                builder.Append($"{verbBuilder.ToString()} ");
+
+                if (verbs.Count > 1)
+                {
+                    if (verbs[0].RequireA)
+                        builder.Append("a ");
+                    builder.Append(verbs[1].Trans[1][0]);
+                }
+
+                builder.Append(".");
+                return builder.ToString();
+            }
+            catch
+            {
+                return "";
+            }
         }
 
         public string SpanishToEnglish(string spanish)

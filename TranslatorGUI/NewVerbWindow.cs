@@ -30,7 +30,7 @@ namespace TranslatorGUI
             bruh[1][7] = $"{SpanHeComBox.Text}{SpanHeComEndBox.Text}";
             bruh[1][8] = $"{SpanWeComBox.Text}{SpanWeComEndBox}";
             bruh[1][9] = $"{SpanTheyComBox.Text}{SpanTheyComEndBox.Text}";
-            Translator.Translator.AddWord(new Verb { Trans = bruh });
+            Translator.Translator.AddWord(new Verb { Trans = bruh, RequireA = Require.Checked });
         }
     }
 }
